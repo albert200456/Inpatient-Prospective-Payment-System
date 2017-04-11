@@ -1,0 +1,28 @@
+/* app css stylesheet */
+
+body {
+  font-family: 'Open Sans', sans-serif;
+}
+.query-bar {
+  width: 350px;
+  position: absolute;
+  bottom: 0;
+  right:0;
+}
+.header-bar {
+	position: absolute;
+	bottom: 10px;
+}
+
+.angular-google-map-container { height: calc(100vh - 270px); }
+
+.title-block {
+	position:relative;
+	padding: 10px;
+	height: 120px;
+	background-image: url("img/logo.png");
+	background-size: auto 100px;
+	background-repeat: no-repeat;
+	background-position: center;
+	background-color: #ffffff;
+}

@@ -1,0 +1,54 @@
+<div class="container">
+  <div class="title-block">
+    <div class="header-bar btn-group" role="group" aria-hidden="true">
+      <button type="button" class="btn btn-default"><a href="#/map-view"><span class="glyphicon glyphicon-map-marker"></span></a></button>
+      <button type="button" class="btn btn-default"><a href="#/list-view"><span class="glyphicon glyphicon-list"></span></a></button>
+    </div>
+    <div class="form-group has-feedback pull-right query-bar">
+        <i class="glyphicon glyphicon-search form-control-feedback"></i>
+        <input ng-model="query" class="form-control" placeholder="Search healthcare provider">
+      </div>
+  </div>
+  <div class="well">
+    <div class="filter-group">
+      <h4 class="pull-left">Select a diagnosis-related group</h4>&nbsp;&nbsp;
+      <div class="btn-group">
+          <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown"><strong>{{DRG_selected}}</strong>&nbsp<span class="caret"></span></button>
+          <ul class="dropdown-menu" role="menu" style="height: 300px; overflow-x: hidden;">
+            <li ng-repeat="(key, value) in all_hospitals | groupBy: 'DRG_definition'">
+              <a ng-click="category(key)">{{key}}</a>
+            </li>
+          </ul>
+        </div><br><br>
+      <form name="priceForm">
+        <label>Minimum<span class="glyphicon glyphicon-usd" aria-hidden="true"></span><input type="text" name="min" ng-model="min" required ng-trim="false"></label>&nbsp;&nbsp;
+        <label>Maximum<span class="glyphicon glyphicon-usd" aria-hidden="true"></span><input type="text" name="max" ng-model="max" required ng-trim="false"></label>&nbsp;&nbsp;
+        <div class="btn-group">
+          <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown"><strong>{{ selectedItem }}</strong><b class="caret"></b></button>
+          <ul class="dropdown-menu" role="menu">
+            <li><a ng-click="accFilter('Average Covered Charges', max, min)">Average Covered Charges</a></li>
+            <li><a ng-click="atpFilter('Average Total Payments', max, min)">Average Total Payments</a></li>
+            <li><a ng-click="ampFilter('Average Medicare Payments', max, min)">Average Medicare Payments</a></li>
+          </ul>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+<div class="angular-google-map-container" id="map">
+  <ui-gmap-google-map center='map.center' zoom='map.zoom' styles='map.styles'>
+    <ui-gmap-marker ng-repeat="m in user_marker" coords="{latitude: m.latitude, longitude: m.longitude}" idKey="m.id" icon="{url: '//upload.wikimedia.org/wikipedia/commons/4/45/Map_marker_icon_–_Nicolas_Mollet_–_Male_–_People_–_Dark.png'}">
+      <ui-gmap-window options="windowOptions" closeClick="closeClick()">
+        <div>You are here!</div>
+      </ui-gmap-window>
+    </ui-gmap-marker>
+    <ui-gmap-marker ng-repeat="m in markers | filter: query" coords="{latitude: m.latitude, longitude: m.longitude}" idKey="m.id">
+      <ui-gmap-window options="windowOptions" closeClick="closeClick()">
+        <div>
+          <address><strong>{{ m.name }}</strong><br>{{ m.street_address }}<br>{{ m.postal_address }}</address>
+          <p>{{ m.acc }}</p><p>{{ m.atp }}</p><p>{{ m.amp }}</p>
+        </div>
+      </ui-gmap-window>
+    </ui-gmap-marker>
+  </ui-gmap-google-map>
+</div>

@@ -1,0 +1,75 @@
+<div class="container">
+  <div class="title-block">
+    <div class="header-bar btn-group" role="group" aria-hidden="true">
+      <button type="button" class="btn btn-default"><a href="#/map-view"><span class="glyphicon glyphicon-map-marker"></span></a></button>
+      <button type="button" class="btn btn-default"><a href="#/list-view"><span class="glyphicon glyphicon-list"></span></a></button>
+    </div>
+    <div class="form-group has-feedback pull-right query-bar">
+        <i class="glyphicon glyphicon-search form-control-feedback"></i>
+        <input ng-model="query" class="form-control" placeholder="Search healthcare provider">
+      </div>
+  </div>
+  <div class="well">
+    <div class="filter-group">
+      <h4 class="pull-left">Select a diagnosis-related group</h4>&nbsp;&nbsp;
+      <div class="btn-group">
+          <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown"><i class="glyphicon glyphicon-tag"></i>&nbsp<strong>{{DRG_selected}}</strong>&nbsp<span class="caret"></span></button>
+          <ul class="dropdown-menu" role="menu" style="height: 300px; overflow-x: hidden;">
+            <li ng-repeat="(key, value) in all_hospitals | groupBy: 'DRG_definition'">
+              <a ng-click="category(key)">{{key}}</a>
+            </li>
+          </ul>
+        </div><br><br>
+      <form name="priceForm">
+        <label>Minimum<span class="glyphicon glyphicon-usd" aria-hidden="true"></span><input type="text" name="min" ng-model="min" required ng-trim="false"></label>&nbsp;&nbsp;
+        <label>Maximum<span class="glyphicon glyphicon-usd" aria-hidden="true"></span><input type="text" name="max" ng-model="max" required ng-trim="false"></label>&nbsp;&nbsp;
+        <div class="btn-group">
+          <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown"><strong>{{ selectedItem }}</strong><b class="caret"></b></button>
+          <ul class="dropdown-menu" role="menu">
+            <li><a ng-click="accFilter('Average Covered Charges', max, min)">Average Covered Charges</a></li>
+            <li><a ng-click="atpFilter('Average Total Payments', max, min)">Average Total Payments</a></li>
+            <li><a ng-click="ampFilter('Average Medicare Payments', max, min)">Average Medicare Payments</a></li>
+          </ul>
+        </div>
+      </form>
+    </div>
+  </div>
+  <div class="row">
+    <table class="table table-hover" ng-repeat="(key, value) in hospitals | filter: query | groupBy: 'DRG_definition'" ng-init="table_index = $index">
+      <th><h4>{{key}}</h4></th>
+      <tr class="active">
+        <th>Name</th>
+        <th>Street Address</th>
+        <th>City</th>
+        <th>State</th>
+        <th>Zip_code</th>
+        <th><span class="glyphicon glyphicon-info-sign" aria-hidden="true"></span></th>
+      </tr>
+      <tr ng-repeat-start="hospital in value | filter: query" ng-init="row_index = $index">
+        <td>{{hospital.name}}</td>
+        <td>{{hospital.street_address}}</td>
+        <td>{{hospital.city}}</td>
+        <td>{{hospital.state}}</td>
+        <td>{{hospital.zip_code}}</td>
+        <td>
+          <a ng-click="split(hospital.DRG_definition)" data-toggle="collapse" data-target="#{{table_index}}-{{row_index}}">
+          <span class="glyphicon glyphicon-align-justify" aria-hidden="true"></span>
+        </a>
+        </td>
+      </tr>
+      <tr ng-repeat-end="" id="{{table_index}}-{{row_index}}" class="collapse">
+        <td colspan="4" style="padding: 0">
+        <div>
+        <h3><span class="glyphicon glyphicon-align-left" aria-hidden="true"></span></h3>
+          <p><b>Average Covered Charges:&nbsp;&nbsp;</b>{{hospital.average_covered_charges}}</p>
+          <p><b>Average Total Payments:&nbsp;&nbsp;</b>{{hospital.average_total_payments}}</p>
+          <p><b>Average Medicare Payments:&nbsp;&nbsp;</b>{{hospital.average_medicare_payments}}</p>
+          <p><b><a href="#/list-view/{{hospital.provider_id}}-{{splitData}}">Reviews</a></b></p>
+        </div>
+        </td>
+      </tr>
+    </table>
+    </div>
+    <br>
+  </div>
+</div>

@@ -1,0 +1,40 @@
+<div class="container">
+    <div class="title-block">
+        <div class="header-bar btn-group" role="group" aria-hidden="true">
+          <button type="button" class="btn btn-default"><a href="#/map-view"><span class="glyphicon glyphicon-map-marker"></span></a></button>
+          <button type="button" class="btn btn-default"><a href="#/list-view"><span class="glyphicon glyphicon-list"></span></a></button>
+        </div>
+    </div>
+    <div class="body">
+        <div class="jumbotron" ng-repeat="hospital in hospitals">
+            <h3>{{hospital.name}}</h3>
+            <h3>{{hospital.DRG_definition}}</h3>
+        </div>
+
+        <table class="table table-hover" style="width:70%">
+            <tr>
+                <td><b>Reviewer:</b></td>
+                <td><b>Rating:</b></td>
+                <td><b>Review:</b></td>
+            </tr>
+            <tr ng-repeat="review in reviews" class="list">
+                <td>{{review.username}}</td>
+                <td>{{review.rating}}</td>
+                <td>{{review.review}}</td>
+            </tr>
+        </table><br>
+
+        <form>
+        <div class="form-group">
+            <label>Name</label><input type="text" class="form-control" ng-model="username">
+        </div>
+        <div class="form-group">
+            <label>Rating</label><input type="text" class="form-control" ng-model="rating">
+        </div>
+        <div class="form-group">
+            <label>Review</label><textarea class="form-control" ng-model="review"></textarea>
+        </div>
+        <button class="btn btn-default" ng-click="add_review()"><b>Submit</b></button>
+        </form>
+    </div>
+</div>
